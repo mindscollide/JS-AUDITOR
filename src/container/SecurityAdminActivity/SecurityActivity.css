@@ -1,0 +1,122 @@
+.report-user-container {
+  align-items: top !important;
+  height: 350px !important;
+  width: 100%;
+  left: 260px !important;
+  justify-content: center !important;
+  position: fixed !important;
+}
+
+.report-user-label {
+  display: flex;
+  justify-content: start;
+  font-size: 18px;
+  color: #004990;
+  font-weight: 600;
+}
+
+.report-text-field-column {
+  margin-left: -5px;
+  display: flex;
+  justify-content: start;
+  align-items: center !important;
+  gap: 6px;
+}
+
+.text-fields-report {
+  width: 100% !important;
+  font-size: 13px;
+  height: 37px;
+  border: 1px solid #ccc;
+}
+
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-select-single:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  width: 100%;
+  height: 37px;
+  padding: 0 11px;
+}
+
+.date-to-security {
+  padding: 5px 12px;
+  align-items: center !important;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+.user-report-reset {
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  width: 100px;
+  height: 37px;
+  border: none;
+  background: linear-gradient(to bottom, #feac78 0%, #e97225 100%) !important;
+}
+
+.user-reset {
+  margin-right: 5px !important;
+}
+
+.user-status-heading {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 600;
+}
+
+.report-btm-buttons {
+  width: 240px;
+  height: 47px;
+  font-weight: 500;
+  font-size: 20px;
+  background-color: white;
+  color: #0d6efd;
+  border: 1px solid #0d6efd;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.report-btm-button-col {
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn-icons {
+  margin-right: 10px !important;
+}
+
+.span-user-color {
+  width: 92%;
+  border-radius: 4px;
+  margin-top: 2%;
+  padding: 2px 8px !important;
+  background-color: white !important;
+}
+
+.date-picker-security-left {
+  height: 37px;
+  /* margin-top: 25px; */
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.date-picker-security-right {
+  height: 37px;
+  /* margin-top: 25px; */
+  align-items: center !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+.date-picker-col{
+  margin-left: -40px;
+}
+
+.reset-btn-col{
+  margin-left: -85px;
+}
