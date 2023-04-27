@@ -31,9 +31,10 @@ const Sidebar = () => {
               <div className="logo" />
               <Menu
                 theme="light"
-                defaultSelectedKeys={["1"]}
                 mode="inline"
                 className="Menu-sidebar-class"
+                defaultOpenKeys={['sub1']}
+                defaultSelectedKeys={["3"]}
               >
                 <SubMenu
                   key="sub1"
