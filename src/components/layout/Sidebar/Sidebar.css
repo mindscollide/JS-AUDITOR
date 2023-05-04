@@ -15,6 +15,7 @@
 }
 
 .js-sidebar {
+  border-top-right-radius: 10px;
   z-index: 1;
   margin: 0 !important;
   background-color: #ffffff !important;
@@ -105,4 +106,18 @@
   > .ant-menu
   .ant-menu-item-selected {
   background-color: #e6e8ff;
+}
+
+
+
+element.style {
+  flex: 0 0 250px;
+  max-width: 250px;
+  min-width: 250px;
+  width: 250px;
+}
+
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-layout .ant-layout-sider {
+  background: #ffffff;
 }
