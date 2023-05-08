@@ -12,10 +12,10 @@ import MainPage from "../container/Pages/mainPage/MainPage";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
-      <Route exact path="AuditLogin" element={<AuditLogin />} />
-      <Route exact path="/" element={<MainPage />}>
+      <Route exact path="/" element={<AuditLogin />} />
+      <Route exact path="/JS/" element={<MainPage />}>
+        <Route path="Home" element={<AuditTrial />} />
         <Route path="" element={<AuditTrial />} />
-        <Route path="Audit" element={<AuditTrial />} />
         <Route path="SecurityActivity" element={<SecurityActivity />} />
       </Route>
     </>

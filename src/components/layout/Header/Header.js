@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Container, Row, Col, Nav, Dropdown } from "react-bootstrap";
 import { Button, Modal } from "../../../components/elements";
 import Navbar from "react-bootstrap/Navbar";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "../../../store/actions/Auth-Actions";
 import { Checkbox, Switch } from "antd";
 import {
   ListUl,
@@ -14,6 +17,8 @@ import JohnCater from "../../../assets/images/profile3.png";
 import JsLogo from "../../../assets/images/js-logo.png";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <>
       <Container fluid className="container-header">
@@ -60,8 +65,13 @@ const Header = () => {
                 </Dropdown.Item>
                 <Dropdown.Item>
                   <Nav.Link>
-                  <i class="icon-logout me-1 icons-color"></i>
-                    <label className="dropdown-select-labels">Logout</label>
+                    <i class="icon-logout me-1 icons-color"></i>
+                    <label
+                      className="dropdown-select-labels"
+                      onClick={() => dispatch(signOut(navigate))}
+                    >
+                      Logout
+                    </label>
                   </Nav.Link>
                 </Dropdown.Item>
               </Dropdown.Menu>

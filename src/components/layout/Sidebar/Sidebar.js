@@ -15,11 +15,11 @@ const Sidebar = () => {
   const { Sider } = Layout;
 
   const navigateToAudit = () => {
-    navigate("/Audit");
+    navigate("/JS/Home");
   };
 
   const navigateToSecurity = () => {
-    navigate("/SecurityActivity");
+    navigate("/JS/SecurityActivity");
   };
 
   return (
@@ -33,7 +33,7 @@ const Sidebar = () => {
                 theme="light"
                 mode="inline"
                 className="Menu-sidebar-class"
-                defaultOpenKeys={['sub1']}
+                defaultOpenKeys={["sub1"]}
                 defaultSelectedKeys={["3"]}
               >
                 <SubMenu
