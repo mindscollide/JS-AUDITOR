@@ -1,9 +1,63 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row, InputGroup, Form } from "react-bootstrap";
-import { Button, TextField } from "../../../components/elements";
+import { Button, TextField, Loader } from "../../../components/elements";
+import { logIn } from "../../../store/actions/Auth-Actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import jsLogo from "../../../assets/images/js-logo.png";
 import "./Audit-Login.css";
 const AuditLogin = () => {
+  const { auth } = useSelector((state) => state);
+  console.log(auth, "authReducerauthReducerauthReducer");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+
+  const [auditCredentials, setAuditCredentials] = useState({
+    UserName: "",
+    Password: "",
+    fakePassword: "",
+  });
+
+  // credentials for email and password
+  const setCredentialHandler = (e) => {
+    if (e.target.name === "Password") {
+      let numChars = e.target.value;
+      let showText = "";
+      for (let i = 0; i < numChars.length; i++) {
+        showText += "•";
+      }
+      setAuditCredentials({
+        ...auditCredentials,
+        [e.target.name]: e.target.value,
+        ["fakePassword"]: showText,
+      });
+    } else {
+      setAuditCredentials({
+        ...auditCredentials,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  // handler for submit login
+  const loginValidateHandler = (e) => {
+    e.preventDefault();
+    if (auditCredentials.UserName !== "" && auditCredentials.Password !== "") {
+      dispatch(logIn(auditCredentials, navigate));
+    } else {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Please Fill All Credentials Fields",
+      });
+    }
+  };
+
   return (
     <Fragment>
       <Col sm={12} lg={12} md={12} className="sign-in">
@@ -28,8 +82,11 @@ const AuditLogin = () => {
                           <i className="icon-user"></i>
                         </InputGroup.Text>
                         <Form.Control
+                          name="UserName"
                           className="form-comtrol-textfield"
                           placeholder="Email ID"
+                          value={auditCredentials.UserName}
+                          onChange={setCredentialHandler}
                           aria-label="Username"
                           aria-describedby="basic-addon1"
                         />
@@ -44,8 +101,10 @@ const AuditLogin = () => {
                           <i className="icon-lock"></i>
                         </InputGroup.Text>
                         <Form.Control
+                          name="Password"
                           className="form-comtrol-textfield"
                           placeholder="Password"
+                          onChange={setCredentialHandler}
                           aria-label="Username"
                           aria-describedby="basic-addon1"
                         />
@@ -61,7 +120,11 @@ const AuditLogin = () => {
                       lg={12}
                       className="signIn-Signup-btn-col"
                     >
-                      <Button text="Login" className="login-btn" />
+                      <Button
+                        text="Login"
+                        className="login-btn"
+                        onClick={loginValidateHandler}
+                      />
                       <Button text="Signup" className="signup-btn" />
                     </Col>
                   </Row>
@@ -71,6 +134,8 @@ const AuditLogin = () => {
           </Row>
         </Container>
       </Col>
+
+      {auth.Loading ? <Loader /> : null}
     </Fragment>
   );
 };

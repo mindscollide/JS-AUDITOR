@@ -5,13 +5,15 @@ import InputDatePicker from "./date-picker/DatePicker";
 import TextField from "./Inputfield/InputField";
 import CustomModal from "./modal/Modal";
 import CustomPaper from "./paper/Paper";
-import Modal from "./modal/Modal"
+import Modal from "./modal/Modal";
+import Loader from "./loader/Loader";
 import CustomRadio from "./radioButton/Radio";
 import Table from "./table/Table";
 import Paper from "./paper/Paper";
 
 export {
   Button,
+  Loader,
   Accordian,
   Checkbox,
   Modal,
