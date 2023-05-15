@@ -61,7 +61,7 @@
   margin-left: -10px !important;
   font-weight: 600;
   font-size: 15px;
-  color: #004990 !important;
+  /* color: #004990 !important; */
 }
 
 .menu-icons {
@@ -76,11 +76,9 @@
   border-bottom: 1px solid #e2e6e9 !important;
 }
 
-
-.submenu-sidebar-icons:hover{
+.submenu-sidebar-icons:hover {
   color: none !important;
 }
-
 
 .menu-items-sidebar {
   font-size: 14px !important;
@@ -108,8 +106,6 @@
   background-color: #e6e8ff;
 }
 
-
-
 element.style {
   flex: 0 0 250px;
   max-width: 250px;
@@ -117,7 +113,19 @@ element.style {
   width: 250px;
 }
 
-
 :where(.css-dev-only-do-not-override-1e3x2xa).ant-layout .ant-layout-sider {
   background: #ffffff;
+}
+
+.AuditMenu > ant-menu-submenu-arrow,
+.ant-menu-submenu-arrow {
+  /* right: 10px !important; */
+  transform: rotate(270deg) translateX(2.5px) !important;
+}
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu
+  .ant-menu-submenu-open.ant-menu-submenu-inline
+  > .ant-menu-submenu-title
+  > .ant-menu-submenu-arrow::after {
+  transform: rotate(135deg) translateX(-2.5px) translateY(0px);
 }
