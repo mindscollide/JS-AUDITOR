@@ -7,9 +7,59 @@ import "./Audittrial.css";
 
 const AuditTrial = () => {
   const [value, setValue] = useState(new Date());
+  const [audittrialdetails, setAudittrialdetails] = useState({
+    referencenumber: 0,
+    customercode: 0,
+    Actionby: "",
+    selectRole: [
+      {
+        value: "jack",
+        label: "Jack",
+      },
+      {
+        value: "saif",
+        label: "saif",
+      },
+    ],
+  });
+
+  console.log(audittrialdetails, "setAudittrialdetailssetAudittrialdetails");
+
+  const onChangeFunc = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "refrencenumber") {
+      setAudittrialdetails({
+        ...audittrialdetails,
+        referencenumber: value,
+      });
+    }
+    if (name === "customercode") {
+      setAudittrialdetails({
+        ...audittrialdetails,
+        customercode: value,
+      });
+    }
+    if (name === "actionby") {
+      setAudittrialdetails({
+        ...audittrialdetails,
+        Actionby: value,
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    console.log("handleChangehandleChangehandleChange", e);
+    setAudittrialdetails({
+      ...audittrialdetails,
+      selectRole: e.value,
+    });
+  };
 
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    setValue(dateString);
+    console.log(setValue, "dateStringdateStringdateString");
   };
 
   return (
@@ -29,18 +79,30 @@ const AuditTrial = () => {
                   <TextField
                     className="text-fields-edituser"
                     placeholder="Reference Number"
+                    name={"refrencenumber"}
+                    value={audittrialdetails.referencenumber}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="MYSIS Customer Code"
+                    name={"customercode"}
+                    value={audittrialdetails.customercode}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="Action By"
+                    name={"actionby"}
+                    value={audittrialdetails.Actionby}
+                    onChange={onChangeFunc}
                   />
                   <Select
                     className="select-field-edit"
                     placeholder="Select Role"
+                    options={audittrialdetails.selectRole}
+                    name="Roles"
+                    onChange={handleChange}
                   />
                 </Col>
               </Row>
