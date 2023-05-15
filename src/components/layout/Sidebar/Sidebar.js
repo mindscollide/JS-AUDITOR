@@ -15,12 +15,16 @@ const Sidebar = () => {
   const { Sider } = Layout;
 
   const navigateToAudit = () => {
-    navigate("/JS/Home");
+    navigate("/JS/AuditTrial");
   };
 
   const navigateToSecurity = () => {
     navigate("/JS/SecurityActivity");
   };
+
+  useEffect(() => {
+    navigate("/JS/AuditTrial");
+  }, []);
 
   return (
     <Fragment>
@@ -28,36 +32,37 @@ const Sidebar = () => {
         <Col className="js-sidebar">
           <Layout>
             <Sider width={250}>
-              <div className="logo" />
-              <Menu
-                theme="light"
-                mode="inline"
-                className="Menu-sidebar-class"
-                defaultOpenKeys={["sub1"]}
-                defaultSelectedKeys={["3"]}
-              >
-                <SubMenu
-                  key="sub1"
-                  icon={<i className="icon-file menu-icons"></i>}
-                  title="Audit Trial"
-                  className="submenu-sidebar-icons"
+              <span className="AuditMenu">
+                <Menu
+                  theme="light"
+                  mode="inline"
+                  className="Menu-sidebar-class"
+                  defaultOpenKeys={["sub1"]}
+                  defaultSelectedKeys={["3"]}
                 >
-                  <Menu.Item
-                    className="menu-items-sidebar"
-                    key="3"
-                    onClick={navigateToAudit}
+                  <SubMenu
+                    key="sub1"
+                    icon={<i className="icon-file menu-icons"></i>}
+                    title="Audit Trial"
+                    className="submenu-sidebar-icons"
                   >
-                    Audit Trial
-                  </Menu.Item>
-                  <Menu.Item
-                    className="menu-items-sidebar"
-                    key="4"
-                    onClick={navigateToSecurity}
-                  >
-                    Security Admin Activity
-                  </Menu.Item>
-                </SubMenu>
-              </Menu>
+                    <Menu.Item
+                      className="menu-items-sidebar"
+                      key="3"
+                      onClick={navigateToAudit}
+                    >
+                      Audit Trial
+                    </Menu.Item>
+                    <Menu.Item
+                      className="menu-items-sidebar"
+                      key="4"
+                      onClick={navigateToSecurity}
+                    >
+                      Security Admin Activity
+                    </Menu.Item>
+                  </SubMenu>
+                </Menu>
+              </span>
             </Sider>
           </Layout>
         </Col>

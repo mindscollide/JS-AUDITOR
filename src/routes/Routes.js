@@ -14,7 +14,7 @@ export const router = createHashRouter(
     <>
       <Route exact path="/" element={<AuditLogin />} />
       <Route exact path="/JS/" element={<MainPage />}>
-        <Route path="Home" element={<AuditTrial />} />
+        <Route path="AuditTrial" element={<AuditTrial />} />
         <Route path="" element={<AuditTrial />} />
         <Route path="SecurityActivity" element={<SecurityActivity />} />
       </Route>
