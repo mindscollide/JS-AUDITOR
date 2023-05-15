@@ -20,6 +20,14 @@ const AuditTrial = () => {
     selectRole: [],
   });
 
+  const resetBtnFunc = () => {
+    setAudittrialdetails({
+      referencenumber: 0,
+      customercode: 0,
+      Actionby: "",
+      setRoledefine: [],
+    });
+  };
   useEffect(() => {
     if (Object.keys(auth.RoleList).length > 0) {
       console.log(auth.RoleList, "lististististist");
@@ -153,6 +161,7 @@ const AuditTrial = () => {
                     icon={<i className="icon-refresh icon-reset-space"></i>}
                     text="Reset"
                     className="reset-btn"
+                    onClick={resetBtnFunc}
                   />
                 </Col>
 

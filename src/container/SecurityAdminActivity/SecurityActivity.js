@@ -7,9 +7,36 @@ import "./SecurityActivity.css";
 
 const SecurityActivity = () => {
   const [value, setValue] = useState(new Date());
+  const [securityactivitydetails, setSecurityactivitydetails] = useState({
+    ActiononUser: "",
+    actionBy: "",
+  });
 
+  console.log(
+    securityactivitydetails,
+    "securityactivitydetailssecurityactivitydetails"
+  );
   const onChange = (date, dateString) => {
     console.log(date, dateString);
+  };
+
+  const onChangeFunc = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "actiononUser") {
+      setSecurityactivitydetails({
+        ...securityactivitydetails,
+        ActiononUser: value,
+      });
+    }
+
+    if (name === "actionby") {
+      setSecurityactivitydetails({
+        ...securityactivitydetails,
+        actionBy: value,
+      });
+    }
   };
   return (
     <>
@@ -32,13 +59,19 @@ const SecurityActivity = () => {
                 >
                   <TextField
                     className="text-fields-report"
-                    value="Action on User"
+                    placeholder={"Action By User"}
                     labelClass="d-none"
+                    name={"actiononUser"}
+                    value={securityactivitydetails.ActiononUser}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-report"
-                    value="Action By"
                     labelClass="d-none"
+                    placeholder={"Action By"}
+                    value={securityactivitydetails.actionBy}
+                    name={"actionby"}
+                    onChange={onChangeFunc}
                   />
                 </Col>
 
