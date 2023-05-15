@@ -1,27 +1,40 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { TextField, Button, Table, Paper } from "../../../components/elements";
 import { Select, Space } from "antd";
 import DatePicker from "react-multi-date-picker";
 import "./Audittrial.css";
+import { useDispatch, useSelector } from "react-redux";
+import { auditorUserRoles } from "../../../store/actions/Auth-Actions";
 
 const AuditTrial = () => {
+  const { auth } = useSelector((state) => state);
+  console.log(auth, "authReducerauthReducerauthReducer");
   const [value, setValue] = useState(new Date());
+  const dispatch = useDispatch();
+  const [roledefine, setRoledefine] = useState([]);
   const [audittrialdetails, setAudittrialdetails] = useState({
     referencenumber: 0,
     customercode: 0,
     Actionby: "",
-    selectRole: [
-      {
-        value: "jack",
-        label: "Jack",
-      },
-      {
-        value: "saif",
-        label: "saif",
-      },
-    ],
+    selectRole: [],
   });
+
+  useEffect(() => {
+    if (Object.keys(auth.RoleList).length > 0) {
+      console.log(auth.RoleList, "lististististist");
+      let newarr = [];
+      auth.RoleList.map((data, index) => {
+        console.log(data, "datadatadatadata");
+        newarr.push({
+          label: data.roleName,
+          value: data.roleID,
+        });
+      });
+      setRoledefine(newarr);
+      console.log(roledefine, "setRoledefinesetRoledefinesetRoledefine");
+    }
+  }, [auth.RoleList]);
 
   console.log(audittrialdetails, "setAudittrialdetailssetAudittrialdetails");
 
@@ -62,6 +75,10 @@ const AuditTrial = () => {
     console.log(setValue, "dateStringdateStringdateString");
   };
 
+  useEffect(() => {
+    dispatch(auditorUserRoles());
+  }, []);
+
   return (
     <Fragment>
       <Container className="edit-user-container">
@@ -100,7 +117,7 @@ const AuditTrial = () => {
                   <Select
                     className="select-field-edit"
                     placeholder="Select Role"
-                    options={audittrialdetails.selectRole}
+                    options={roledefine}
                     name="Roles"
                     onChange={handleChange}
                   />
