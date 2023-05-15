@@ -6,6 +6,10 @@ import DatePicker from "react-multi-date-picker";
 import "./Audittrial.css";
 import { useDispatch, useSelector } from "react-redux";
 import { auditorUserRoles } from "../../../store/actions/Auth-Actions";
+import {
+  AcceptsOnlyCharacter,
+  removeSpaceandSpecialCharAcptHash,
+} from "../../../common/functions/RegexFunctions";
 
 const AuditTrial = () => {
   const { auth } = useSelector((state) => state);
@@ -13,21 +17,48 @@ const AuditTrial = () => {
   const [value, setValue] = useState(new Date());
   const dispatch = useDispatch();
   const [roledefine, setRoledefine] = useState([]);
+  const [errormessege, setErrormessege] = useState("");
   const [audittrialdetails, setAudittrialdetails] = useState({
-    referencenumber: 0,
-    customercode: 0,
-    Actionby: "",
+    refrencenumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    customercode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Actionby: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
     selectRole: [],
+    errorStatus: false,
   });
 
   const resetBtnFunc = () => {
     setAudittrialdetails({
-      referencenumber: 0,
-      customercode: 0,
-      Actionby: "",
+      referencenumber: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      customercode: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Actionby: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
       setRoledefine: [],
     });
   };
+
   useEffect(() => {
     if (Object.keys(auth.RoleList).length > 0) {
       console.log(auth.RoleList, "lististististist");
@@ -48,25 +79,96 @@ const AuditTrial = () => {
 
   const onChangeFunc = (e) => {
     let name = e.target.name;
-    let value = e.target.value;
-
-    if (name === "refrencenumber") {
-      setAudittrialdetails({
-        ...audittrialdetails,
-        referencenumber: value,
-      });
-    }
-    if (name === "customercode") {
-      setAudittrialdetails({
-        ...audittrialdetails,
-        customercode: value,
-      });
-    }
-    if (name === "actionby") {
-      setAudittrialdetails({
-        ...audittrialdetails,
-        Actionby: value,
-      });
+    let value = e.target.value.trimStart();
+    if (value.length <= 100) {
+      if (name === "refrencenumber" && value !== "") {
+        if (removeSpaceandSpecialCharAcptHash(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            refrencenumber: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            refrencenumber: {
+              value: audittrialdetails.refrencenumber.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "refrencenumber" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          refrencenumber: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else if (name === "customercode" && value !== "") {
+        if (removeSpaceandSpecialCharAcptHash(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            customercode: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            customercode: {
+              value: audittrialdetails.customercode.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "customercode" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          customercode: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else if (name === "actionby" && value !== "") {
+        if (AcceptsOnlyCharacter(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            Actionby: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            Actionby: {
+              value: audittrialdetails.Actionby.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "actionby" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          Actionby: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
     }
   };
 
@@ -105,21 +207,21 @@ const AuditTrial = () => {
                     className="text-fields-edituser"
                     placeholder="Reference Number"
                     name={"refrencenumber"}
-                    value={audittrialdetails.referencenumber}
+                    value={audittrialdetails.refrencenumber.value}
                     onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="MYSIS Customer Code"
                     name={"customercode"}
-                    value={audittrialdetails.customercode}
+                    value={audittrialdetails.customercode.value}
                     onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="Action By"
                     name={"actionby"}
-                    value={audittrialdetails.Actionby}
+                    value={audittrialdetails.Actionby.value}
                     onChange={onChangeFunc}
                   />
                   <Select
