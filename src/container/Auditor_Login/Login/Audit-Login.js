@@ -102,7 +102,7 @@ const AuditLogin = () => {
                         </InputGroup.Text>
                         <Form.Control
                           name="Password"
-                          className="form-comtrol-textfield"
+                          className="form-comtrol-textfield-password"
                           placeholder="Password"
                           onChange={setCredentialHandler}
                           aria-label="Username"

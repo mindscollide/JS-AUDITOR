@@ -4,12 +4,96 @@ import { TextField, Button, Table, Paper } from "../../components/elements";
 import { Select } from "antd";
 import DatePicker from "react-multi-date-picker";
 import "./SecurityActivity.css";
+import { AcceptsOnlyCharacter } from "../../common/functions/RegexFunctions";
 
 const SecurityActivity = () => {
   const [value, setValue] = useState(new Date());
+  const [errormessege, setErrormessege] = useState("");
+  const [securityactivitydetails, setSecurityactivitydetails] = useState({
+    ActiononUser: {
+      value: "",
+      errormessege: "",
+      errorStatus: false,
+    },
+    actionBy: {
+      value: "",
+      errormessege: "",
+      errorStatus: false,
+    },
+  });
 
+  console.log(
+    securityactivitydetails,
+    "securityactivitydetailssecurityactivitydetails"
+  );
   const onChange = (date, dateString) => {
     console.log(date, dateString);
+  };
+
+  const onChangeFunc = (e) => {
+    let name = e.target.name;
+    let value = e.target.value.trimStart();
+    if (value.length <= 100) {
+      if (name === "actiononUser" && value !== "") {
+        if (AcceptsOnlyCharacter(value)) {
+          setSecurityactivitydetails({
+            ...securityactivitydetails,
+            ActiononUser: {
+              value: value,
+              errormessege: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setSecurityactivitydetails({
+            ...securityactivitydetails,
+            ActiononUser: {
+              value: securityactivitydetails.ActiononUser.value,
+              errormessege: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "actiononUser" && value === "") {
+        setSecurityactivitydetails({
+          ...securityactivitydetails,
+          ActiononUser: {
+            value: "",
+            errormessege: "",
+            errorStatus: false,
+          },
+        });
+      } else if (name === "actionby" && value !== "") {
+        if (AcceptsOnlyCharacter(value)) {
+          setSecurityactivitydetails({
+            ...securityactivitydetails,
+            actionBy: {
+              value: value,
+              errormessege: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setSecurityactivitydetails({
+            ...securityactivitydetails,
+            actionBy: {
+              value: securityactivitydetails.actionBy.value,
+              errormessege: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "actionby" && value === "") {
+        setSecurityactivitydetails({
+          ...securityactivitydetails,
+          actionBy: {
+            value: "",
+            errormessege: "",
+            errorStatus: false,
+          },
+        });
+      }
+    }
   };
   return (
     <>
@@ -32,13 +116,19 @@ const SecurityActivity = () => {
                 >
                   <TextField
                     className="text-fields-report"
-                    value="Action on User"
+                    placeholder={"Action By User"}
                     labelClass="d-none"
+                    name={"actiononUser"}
+                    value={securityactivitydetails.ActiononUser.value}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-report"
-                    value="Action By"
                     labelClass="d-none"
+                    placeholder={"Action By"}
+                    value={securityactivitydetails.actionBy.value}
+                    name={"actionby"}
+                    onChange={onChangeFunc}
                   />
                 </Col>
 
