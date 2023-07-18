@@ -30,15 +30,18 @@ const Header = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="nav-rfq-calculator ms-auto">
-                <Nav.Link>
+                {/* <Nav.Link>
                   <span className="d-inline-block notification icn-wrapper">
                     <i className="icon-bell icon-bell-color"></i>
                     <span className="notification-badge">25</span>
                   </span>
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link>
                   <span className="d-inline-block logout icn-wrapper">
-                    <i className="icon-logout icon-bell-color"></i>
+                    <i
+                      className="icon-logout icon-bell-color"
+                      onClick={() => dispatch(signOut(navigate))}
+                    ></i>
                   </span>
                 </Nav.Link>
               </Nav>
@@ -63,17 +66,16 @@ const Header = () => {
                     Help & Support
                   </label>
                 </Dropdown.Item>
-                <Dropdown.Item>
+                {/* <Dropdown.Item>
                   <Nav.Link>
                     <i class="icon-logout me-1 icons-color"></i>
                     <label
                       className="dropdown-select-labels"
-                      onClick={() => dispatch(signOut(navigate))}
                     >
                       Logout
                     </label>
                   </Nav.Link>
-                </Dropdown.Item>
+                </Dropdown.Item> */}
               </Dropdown.Menu>
             </Dropdown>
           </Container>

@@ -69,65 +69,67 @@ const AuditLogin = () => {
             <Col sm={12} md={12} lg={12} className="login-container">
               <Row>
                 <Col sm={5} md={5} lg={5} className="center-div flex-column">
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
-                      <span className="Heading-js">JS Login Portal</span>
-                    </Col>
-                    <Col sm={12} md={12} lg={12} className="mt-3">
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text
-                          id="basic-addon1"
-                          className="Icon-Field-class"
-                        >
-                          <i className="icon-user"></i>
-                        </InputGroup.Text>
-                        <Form.Control
-                          name="UserName"
-                          className="form-comtrol-textfield"
-                          placeholder="Email ID"
-                          value={auditCredentials.UserName}
-                          onChange={setCredentialHandler}
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
-                        />
-                      </InputGroup>
-                    </Col>
-                    <Col sm={12} md={12} lg={12} className="mb-3">
-                      <InputGroup>
-                        <InputGroup.Text
-                          id="basic-addon1"
-                          className="Icon-Field-class"
-                        >
-                          <i className="icon-lock"></i>
-                        </InputGroup.Text>
-                        <Form.Control
-                          name="Password"
-                          className="form-comtrol-textfield"
-                          placeholder="Password"
-                          onChange={setCredentialHandler}
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
-                        />
-                      </InputGroup>
-                      {/* <TextField
+                  <Form onSubmit={loginValidateHandler}>
+                    <Row>
+                      <Col sm={12} md={12} lg={12}>
+                        <span className="Heading-js">JS Login Portal</span>
+                      </Col>
+                      <Col sm={12} md={12} lg={12} className="mt-3">
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text
+                            id="basic-addon1"
+                            className="Icon-Field-class"
+                          >
+                            <i className="icon-user"></i>
+                          </InputGroup.Text>
+                          <Form.Control
+                            name="UserName"
+                            className="form-comtrol-textfield"
+                            placeholder="Email ID"
+                            value={auditCredentials.UserName}
+                            onChange={setCredentialHandler}
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                          />
+                        </InputGroup>
+                      </Col>
+                      <Col sm={12} md={12} lg={12} className="mb-3">
+                        <InputGroup>
+                          <InputGroup.Text
+                            id="basic-addon1"
+                            className="Icon-Field-class"
+                          >
+                            <i className="icon-lock"></i>
+                          </InputGroup.Text>
+                          <Form.Control
+                            name="Password"
+                            className="form-control-password"
+                            placeholder="Password"
+                            onChange={setCredentialHandler}
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                          />
+                        </InputGroup>
+                        {/* <TextField
                         placeholder="User Password"
                         className="Text-field"
                       /> */}
-                    </Col>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="signIn-Signup-btn-col"
-                    >
-                      <Button
-                        text="Login"
-                        className="login-btn"
-                        onClick={loginValidateHandler}
-                      />
-                      <Button text="Signup" className="signup-btn" />
-                    </Col>
-                  </Row>
+                      </Col>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="signIn-Signup-btn-col"
+                      >
+                        <Button
+                          text="Login"
+                          className="login-btn"
+                          onClick={loginValidateHandler}
+                        />
+                        <Button text="Signup" className="signup-btn" />
+                      </Col>
+                    </Row>
+                  </Form>
                 </Col>
               </Row>
             </Col>
