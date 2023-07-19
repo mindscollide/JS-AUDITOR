@@ -23,8 +23,9 @@ const SecurityActivity = () => {
   const { auth, reportReducer } = useSelector((state) => state);
   console.log(auth, "auutttthhhhh");
 
-  // select current date
-  const minDate = new Date();
+  // state for disable the previous date from end date by selecting date from start date
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // state for action by drop down
   const [securityActionBy, setSecurityActionBy] = useState([]);
@@ -79,6 +80,7 @@ const SecurityActivity = () => {
       errorStatus: false,
     },
   });
+  console.log(securityActivityFields, "securityActivityFieldssecurity");
 
   // validation for textfields in audit action
   const securityAuditValidation = (e) => {
@@ -201,6 +203,8 @@ const SecurityActivity = () => {
 
   //start date state of multi datepicker
   const dateStartChangeHandler = (date) => {
+    setStartDate(date);
+    setEndDate(null);
     let newDate = moment(date).format("YYYY-MM-DD");
     setSecurityActivityFields({
       ...securityActivityFields,
@@ -213,6 +217,7 @@ const SecurityActivity = () => {
 
   //end date state of multi datepicker
   const dateEndChangeHandler = (date) => {
+    setEndDate(date);
     let newEndDate = moment(date).format("YYYY-MM-DD");
     setSecurityActivityFields({
       ...securityActivityFields,
@@ -274,9 +279,13 @@ const SecurityActivity = () => {
                   className="SecurityAdmin-Datepicker-Start"
                 >
                   <DatePicker
+                    selected={startDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={new Date()}
                     autoComplete="off"
                     value={securityActivityFields.startDate.value}
                     onChange={(value) =>
@@ -289,9 +298,17 @@ const SecurityActivity = () => {
                   <label className="date-to-security">to</label>
 
                   <DatePicker
+                    selected={endDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={
+                      startDate
+                        ? moment(startDate).add(1, "days").toDate()
+                        : null
+                    }
                     autoComplete="off"
                     value={securityActivityFields.endDate.value}
                     onChange={(value) =>

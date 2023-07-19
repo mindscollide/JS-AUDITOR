@@ -28,6 +28,10 @@ const TradeCount = () => {
     (state) => state
   );
 
+  // state for disable the previous date from end date by selecting date from start date
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   // state for category dropdown
   const [selectAllCategory, setSelectAllCategory] = useState([]);
   const [selectAllCategoryValue, setSelectAllCategoryValue] = useState([]);
@@ -50,20 +54,6 @@ const TradeCount = () => {
   let currentPage = localStorage.getItem("tradeCountPage")
     ? localStorage.getItem("tradeCountPage")
     : 1;
-
-  //start date state of multi datepicker
-  const [startDateProps, setStartDateProps] = useState({
-    value: new Date(),
-    format: "MM-DD-YYYY",
-    onChange: (date) => console.log(date.format()),
-  });
-
-  //end date state of multi datepicker
-  const [endDateProps, setEndDateProps] = useState({
-    value: new Date(),
-    format: "MM-DD-YYYY",
-    onChange: (date) => console.log(date.format()),
-  });
 
   // state for company dropdown by using corporateNameByBankId API
   const [companyDropdown, setCompanyDropdown] = useState([]);
@@ -149,6 +139,8 @@ const TradeCount = () => {
 
   //start date state of multi datepicker
   const changeDateStartHandler = (date) => {
+    setStartDate(date);
+    setEndDate(null);
     let newDate = moment(date).format("YYYY-MM-DD");
     setUserTradeCount({
       ...userTradeCount,
@@ -161,6 +153,7 @@ const TradeCount = () => {
 
   //end date state of multi datepicker
   const changeDateEndHandler = (date) => {
+    setEndDate(date);
     let newEndDate = moment(date).format("YYYY-MM-DD");
     setUserTradeCount({
       ...userTradeCount,
@@ -527,8 +520,8 @@ const TradeCount = () => {
         userTradeCount.endDate.value !== ""
           ? moment(userTradeCount.endDate.value).format("YYYYMMDD")
           : "",
-      PageNumber: currentPage !== null ? parseInt(currentPage) : 1,
-      Length: currentPageSize !== null ? parseInt(currentPageSize) : 50,
+      PageNumber: current !== null ? parseInt(current) : 1,
+      Length: pageSize !== null ? parseInt(pageSize) : 50,
     };
     localStorage.setItem("tradeCountSize", pageSize);
     localStorage.setItem("tradeCountPage", current);
@@ -901,9 +894,13 @@ const TradeCount = () => {
 
                 <Col lg={6} md={6} sm={12} className="Tradecount-Datepicker">
                   <DatePicker
+                    selected={startDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={new Date()}
                     autoComplete="off"
                     value={userTradeCount.startDate.value}
                     placeholder="Start date"
@@ -916,9 +913,17 @@ const TradeCount = () => {
                   <label className="Tradecount-date-to">to</label>
 
                   <DatePicker
+                    selected={endDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={
+                      startDate
+                        ? moment(startDate).add(1, "days").toDate()
+                        : null
+                    }
                     autoComplete="off"
                     value={userTradeCount.endDate.value}
                     placeholder="End date"
@@ -981,7 +986,7 @@ const TradeCount = () => {
                     onChange={tradeCountPagination}
                     current={currentPage !== null ? currentPage : 1}
                     showSizeChanger
-                    pageSizeOptions={[50, 100, 200]}
+                    pageSizeOptions={[30, 50, 100, 200]}
                     pageSize={currentPageSize !== null ? currentPageSize : 50}
                     className="PaginationStyle-TradeCount"
                   />

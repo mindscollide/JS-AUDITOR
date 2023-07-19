@@ -23,8 +23,9 @@ const AuditTrial = () => {
   const { auth, reportReducer } = useSelector((state) => state);
   console.log(auth, "auutttthhhhh");
 
-  // select current date
-  const minDate = new Date();
+  // state for disable the previous date from end date by selecting date from start date
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // state for action by drop down
   const [actionBy, setActionBy] = useState([]);
@@ -79,6 +80,7 @@ const AuditTrial = () => {
       errorStatus: false,
     },
   });
+  console.log(auditTrialFields, "auditTrialFieldsauditTrialFields");
 
   // validation for textfields in audit action
   const userAuditTrialValidation = (e) => {
@@ -175,6 +177,8 @@ const AuditTrial = () => {
 
   //start date state of multi datepicker
   const dateStartChangeHandler = (date) => {
+    setStartDate(date);
+    setEndDate(null);
     let newDate = moment(date).format("YYYY-MM-DD");
     setAuditTrialFields({
       ...auditTrialFields,
@@ -187,6 +191,7 @@ const AuditTrial = () => {
 
   //end date state of multi datepicker
   const dateEndChangeHandler = (date) => {
+    setEndDate(date);
     let newEndDate = moment(date).format("YYYY-MM-DD");
     setAuditTrialFields({
       ...auditTrialFields,
@@ -274,9 +279,13 @@ const AuditTrial = () => {
 
                 <Col lg={3} md={3} sm={12} className="AuditTrial-Datepicker">
                   <DatePicker
+                    selected={startDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={new Date()}
                     autoComplete="off"
                     value={auditTrialFields.startDate.value}
                     onChange={(value) =>
@@ -289,9 +298,17 @@ const AuditTrial = () => {
 
                   <label className="date-to">to</label>
                   <DatePicker
+                    selected={endDate}
                     highlightToday={true}
                     onOpenPickNewDate={false}
-                    minDate={minDate}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={
+                      startDate
+                        ? moment(startDate).add(1, "days").toDate()
+                        : null
+                    }
                     autoComplete="off"
                     value={auditTrialFields.endDate.value}
                     onChange={(value) =>
