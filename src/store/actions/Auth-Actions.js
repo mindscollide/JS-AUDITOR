@@ -6,8 +6,8 @@ import {
   authenticationRefreshToken,
   getAllCorporateCategoriesERM,
   getAuditActionApi,
-} from "../../assets/common/apis/Api_config";
-import { authenticationAPI } from "../../assets/common/apis/Api_ends_points";
+} from "../../common/apis/Api_config";
+import { authenticationAPI } from "../../common/apis/Api_ends_points";
 
 const logininit = () => {
   return {

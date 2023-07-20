@@ -15,6 +15,7 @@ import DatePicker from "react-multi-date-picker";
 import { getAllAuditAction } from "../../store/actions/Auth-Actions";
 import { downloadSecurityReport } from "../../store/actions/Download-Report";
 import "./SecurityActivity.css";
+import { AcceptsOnlyCharacter } from "../../common/functions/RegexFunctions";
 
 const SecurityActivity = () => {
   const navigate = useNavigate();

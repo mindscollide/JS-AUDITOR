@@ -30,12 +30,12 @@ const Header = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="nav-rfq-calculator ms-auto">
-                {/* <Nav.Link>
+                <Nav.Link>
                   <span className="d-inline-block notification icn-wrapper">
                     <i className="icon-bell icon-bell-color"></i>
                     <span className="notification-badge">25</span>
                   </span>
-                </Nav.Link> */}
+                </Nav.Link>
                 <Nav.Link>
                   <span className="d-inline-block logout icn-wrapper">
                     <i

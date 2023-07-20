@@ -15,6 +15,11 @@ import Select from "react-select";
 import moment from "moment";
 import DatePicker from "react-multi-date-picker";
 import "./Audittrial.css";
+// import { auditorUserRoles } from "../../../store/actions/Auth-Actions";
+import {
+  AcceptsOnlyCharacter,
+  removeSpaceandSpecialCharAcptHash,
+} from "../../../common/functions/RegexFunctions";
 
 const AuditTrial = () => {
   const navigate = useNavigate();
@@ -227,9 +232,14 @@ const AuditTrial = () => {
     setActionByValue([]);
   };
 
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
+  // const onChange = (date, dateString) => {
+  //   setValue(dateString);
+  //   console.log(setValue, "dateStringdateStringdateString");
+  // };
+
+  // useEffect(() => {
+  //   dispatch(auditorUserRoles());
+  // }, []);
 
   return (
     <Fragment>
