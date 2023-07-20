@@ -3,14 +3,14 @@ const baseURL = "http://192.168.18.241";
 
 // our service URLs
 const authenticationURL = ":12000/ERM_Auth";
-const getNewUserRequestCountUrl = ":12001/SecurityAdmin";
-const getNewUserRequest = ":12001/SecurityAdmin";
-const saveUser = ":12001/SecurityAdmin";
-const editUser = ":12001/SecurityAdmin";
-const getAllUserList = ":12001/SecurityAdmin";
-const saveUserRequest = ":12003/SystemAdmin";
+const jsAuditor = ":12006/Auditor";
+const SystemAdminPort = ":12003/SystemAdmin";
+const reportPort = ":12004/ExcelReport";
 
 //our Final Api
 const authenticationAPI = baseURL + authenticationURL;
+const auditorAPI = baseURL + jsAuditor;
+const SystemAdminApi = baseURL + SystemAdminPort;
+const ReportApi = baseURL + reportPort;
 
-export { authenticationAPI };
+export { authenticationAPI, auditorAPI, SystemAdminApi, ReportApi };

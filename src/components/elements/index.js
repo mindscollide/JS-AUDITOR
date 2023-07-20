@@ -10,6 +10,7 @@ import Loader from "./loader/Loader";
 import CustomRadio from "./radioButton/Radio";
 import Table from "./table/Table";
 import Paper from "./paper/Paper";
+import { Notification, Message } from "./snack_bar";
 
 export {
   Button,
@@ -24,4 +25,6 @@ export {
   CustomRadio,
   Table,
   Paper,
+  Notification,
+  Message,
 };

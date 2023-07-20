@@ -7,6 +7,8 @@ const initialState = {
   ResponseMessage: "",
   isSignUp: false,
   SessionExpeireResponseMessage: "",
+  getAllCategoryCorporate: [],
+  getAuditActions: [],
   roles: null,
   RoleList: [],
   Token: "",
@@ -57,6 +59,52 @@ const authReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
 
+    case actions.GET_ALL_CORPORATES_CATEGORY_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.GET_ALL_CORPORATES_CATEGORY_SUCCESS:
+      console.log(action, "GET_ALL_CORPORATES_CATEGORY_SUCCESS");
+      return {
+        ...state,
+        Loading: false,
+        getAllCategoryCorporate: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.GET_ALL_CORPORATES_CATEGORY_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        getAllCategoryCorporate: [],
+        ResponseMessage: action.message,
+      };
+
+    case actions.GET_ALL_AUDIT_ACTION_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.GET_ALL_AUDIT_ACTION_SUCCESS:
+      console.log(action, "GET_ALL_CORPORATES_CATEGORY_SUCCESS");
+      return {
+        ...state,
+        Loading: false,
+        getAuditActions: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.GET_ALL_AUDIT_ACTION_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        getAuditActions: [],
+        ResponseMessage: action.message,
+      };
+
     case actions.SIGN_OUT:
       localStorage.clear();
       return {
@@ -69,27 +117,27 @@ const authReducer = (state = initialState, action) => {
         SessionExpeireResponseMessage: action.message,
       };
 
-    case actions.ROLE_LIST_INIT:
-      return {
-        ...state,
-        Loading: true,
-      };
+    // case actions.ROLE_LIST_INIT:
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //   };
 
-    case actions.ROLE_LIST_SUCCESS:
-      return {
-        ...state,
-        Loading: false,
-        RoleList: action.response,
-        ResponseMessage: action.response,
-      };
+    // case actions.ROLE_LIST_SUCCESS:
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     RoleList: action.response,
+    //     ResponseMessage: action.response,
+    //   };
 
-    case actions.ROLE_LIST_FAIL:
-      return {
-        ...state,
-        Loading: false,
-        RoleList: [],
-        ResponseMessage: action.response,
-      };
+    // case actions.ROLE_LIST_FAIL:
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     RoleList: [],
+    //     ResponseMessage: action.response,
+    //   };
 
     default:
       return { ...state };

@@ -3,10 +3,11 @@ import axios from "axios";
 import {
   authenticationLogIn,
   authenticationSignUp,
-  authticcationRoles,
+  authenticationRefreshToken,
+  getAllCorporateCategoriesERM,
+  getAuditActionApi,
 } from "../../common/apis/Api_config";
 import { authenticationAPI } from "../../common/apis/Api_ends_points";
-import { type } from "@testing-library/user-event/dist/type";
 
 const logininit = () => {
   return {
@@ -66,6 +67,69 @@ const signOut = (navigate, message) => {
   }
 };
 
+// REFRESH TOKEN
+
+// FAIL
+const refreshtokenFail = (response, message) => {
+  return {
+    type: actions.REFRESH_TOKEN_FAIL,
+    response: response,
+    message: message,
+  };
+};
+// SUCCESS
+const refreshtokenSuccess = (response, message) => {
+  return {
+    type: actions.REFRESH_TOKEN_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// API
+const RefreshToken = (navigate) => {
+  let Token = JSON.parse(localStorage.getItem("token"));
+  let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+  console.log("RefreshToken", Token, RefreshToken);
+  let Data = {
+    Token: Token,
+    RefreshToken: RefreshToken,
+  };
+  console.log("RefreshToken", Data);
+  return async (dispatch) => {
+    let form = new FormData();
+    form.append("RequestMethod", authenticationRefreshToken.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: authenticationAPI,
+      data: form,
+    })
+      .then(async (response) => {
+        console.log("RefreshToken", response);
+        if (response.data.responseCode === 200) {
+          await dispatch(
+            refreshtokenSuccess(
+              response.data.responseResult,
+              "Refresh Token Update Successfully"
+            )
+          );
+        } else {
+          console.log("RefreshToken", response);
+          let message2 = "Your Session has expired. Please login again";
+          dispatch(signOut(navigate, message2));
+          await dispatch(
+            refreshtokenFail("Your Session has expired. Please login again.")
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          refreshtokenFail("Your Session has expired. Please login again.")
+        );
+      });
+  };
+};
+
 //signIn API Function
 const logIn = (UserData, navigate) => {
   console.log("logincredentials", UserData);
@@ -106,11 +170,17 @@ const logIn = (UserData, navigate) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_AuthManager_Login_03"
             ) {
-              if (response.data.responseResult.roleID === 2) {
+              if (response.data.responseResult.roleID === 6) {
                 localStorage.setItem(
                   "userID",
                   response.data.responseResult.userID
                 );
+                localStorage.setItem(
+                  "bankID",
+                  response.data.responseResult.bankID
+                );
+                localStorage.setItem("defaultOpenKey ", "sub1");
+                localStorage.setItem("defaultSelectedKey", "3");
                 localStorage.setItem(
                   "firstName",
                   response.data.responseResult.firstName
@@ -137,10 +207,14 @@ const logIn = (UserData, navigate) => {
                 );
                 navigate("/Js/");
                 dispatch(loginsuccess("Successfully Logged In"));
-              } else if (response.data.responseResult.roleID === 4) {
+              } else if (response.data.responseResult.roleID === 6) {
                 localStorage.setItem(
                   "userID",
                   response.data.responseResult.userID
+                );
+                localStorage.setItem(
+                  "bankID",
+                  response.data.responseResult.bankID
                 );
                 localStorage.setItem(
                   "firstName",
@@ -166,7 +240,7 @@ const logIn = (UserData, navigate) => {
                   "refreshToken",
                   response.data.responseResult.refreshToken
                 );
-                navigate("/AdminDashboard/");
+                navigate("/Js/");
                 dispatch(loginsuccess("Successfully Logged In"));
               } else {
                 dispatch(
@@ -398,51 +472,60 @@ const signUp = (UserData, navigate) => {
   };
 };
 
-const rolelistINIT = () => {
+// for get All Corporate Categories Api
+const getAllCategoryInit = () => {
   return {
-    type: actions.ROLE_LIST_INIT,
+    type: actions.GET_ALL_CORPORATES_CATEGORY_INIT,
   };
 };
 
-const rolelistSUCCESS = (response, message) => {
+const getAllCategorySuccess = (response, message) => {
   return {
-    type: actions.ROLE_LIST_SUCCESS,
+    type: actions.GET_ALL_CORPORATES_CATEGORY_SUCCESS,
     response: response,
     message: message,
   };
 };
 
-const rolelistFAIL = (response, message) => {
+const getAllCategoryFail = (message) => {
   return {
-    type: actions.ROLE_LIST_FAIL,
-    response: response,
+    type: actions.GET_ALL_CORPORATES_CATEGORY_FAIL,
     message: message,
   };
 };
 
-// auditor roles function
-const auditorUserRoles = () => {
+const getAllCorporateCategoryApi = (navigate) => {
+  let token = localStorage.getItem("token");
   return (dispatch) => {
-    dispatch(rolelistINIT());
+    dispatch(getAllCategoryInit());
     let form = new FormData();
-    form.append("RequestMethod", authticcationRoles.RequestMethod);
+    form.append("RequestMethod", getAllCorporateCategoriesERM.RequestMethod);
     axios({
       method: "POST",
       url: authenticationAPI,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
       .then(async (response) => {
-        console.log("UserRoleListUserRoleList", response);
-        if (response.data.responseCode === 200) {
+        console.log("CorporateCategoryCorporateCategory", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate));
+          dispatch(getAllCorporateCategoryApi(navigate));
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "ERM_AuthService_RoleManager_RoleList_01".toLowerCase()
+              "ERM_AuthService_CommonManager_GetAllCorporateCategories_01".toLowerCase()
             ) {
-              console.log("UserRoleListUserRoleList", response);
+              console.log(
+                "UserRoleListUserRoleList",
+                response.data.responseResult.corporateCategories
+              );
               dispatch(
-                rolelistSUCCESS(
-                  response.data.responseResult.roles,
+                getAllCategorySuccess(
+                  response.data.responseResult.corporateCategories,
                   "Record found"
                 )
               );
@@ -450,32 +533,128 @@ const auditorUserRoles = () => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_RoleManager_RoleList_02".toLowerCase()
+                  "ERM_AuthService_CommonManager_GetAllCorporateCategories_02".toLowerCase()
                 )
             ) {
-              dispatch(rolelistFAIL("No Record Found"));
+              dispatch(getAllCategoryFail("No Record Found"));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_RoleManager_RoleList_03".toLowerCase()
+                  "ERM_AuthService_CommonManager_GetAllCorporateCategories_03".toLowerCase()
                 )
             ) {
-              dispatch(rolelistFAIL("Exception No roles available"));
+              dispatch(getAllCategoryFail("Exception Something went wrong"));
             }
           } else {
-            dispatch(rolelistFAIL("Something went wrong"));
-            console.log("There's no User Role");
+            dispatch(getAllCategoryFail("Something went wrong"));
+            console.log("There's no corporates category");
           }
         } else {
-          dispatch(rolelistFAIL("Something went wrong"));
-          console.log("There's no User Role");
+          dispatch(getAllCategoryFail("Something went wrong"));
+          console.log("There's no corporates category");
         }
       })
       .catch((response) => {
-        dispatch(rolelistFAIL("something went wrong"));
+        dispatch(getAllCategoryFail("something went wrong"));
       });
   };
 };
 
-export { logIn, signUp, signOut, auditorUserRoles };
+// get all audit action api in dropdown for action by
+const getAllAuditInit = () => {
+  return {
+    type: actions.GET_ALL_AUDIT_ACTION_INIT,
+  };
+};
+
+const getAllAuditSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_AUDIT_ACTION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllAuditFail = (message) => {
+  return {
+    type: actions.GET_ALL_AUDIT_ACTION_FAIL,
+    message: message,
+  };
+};
+
+const getAllAuditAction = (navigate) => {
+  let token = localStorage.getItem("token");
+  return (dispatch) => {
+    dispatch(getAllAuditInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAuditActionApi.RequestMethod);
+    axios({
+      method: "POST",
+      url: authenticationAPI,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("getAuditActionApigetAuditActionApi", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate));
+          dispatch(getAllAuditAction(navigate));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "ERM_AuthService_CommonManager_GetAllAuditActions_01".toLowerCase()
+            ) {
+              console.log(
+                "getAllAuditActiongetAllAuditAction",
+                response.data.responseResult.auditActions
+              );
+              dispatch(
+                getAllAuditSuccess(
+                  response.data.responseResult.auditActions,
+                  "Pay Record Found "
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_CommonManager_GetAllAuditActions_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAllAuditFail("Pay No Record Found"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_CommonManager_GetAllAuditActions_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAllAuditFail("Exception Something went wrong"));
+            }
+          } else {
+            dispatch(getAllAuditFail("Something went wrong"));
+            console.log("There's no corporates category");
+          }
+        } else {
+          dispatch(getAllAuditFail("Something went wrong"));
+          console.log("There's no corporates category");
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllAuditFail("something went wrong"));
+      });
+  };
+};
+
+export {
+  logIn,
+  signUp,
+  signOut,
+  RefreshToken,
+  getAllCorporateCategoryApi,
+  getAllAuditAction,
+};
