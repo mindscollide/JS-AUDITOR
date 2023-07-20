@@ -1,8 +1,8 @@
 import * as actions from "../action_types";
 import axios from "axios";
-import { searchTransactionTradeCount } from "../../assets/common/apis/Api_config";
+import { searchTransactionTradeCount } from "../../common/apis/Api_config";
 import { RefreshToken } from "./Auth-Actions";
-import { auditorAPI } from "../../assets/common/apis/Api_ends_points";
+import { auditorAPI } from "../../common/apis/Api_ends_points";
 
 const tradeCountSearchGetInit = () => {
   return {

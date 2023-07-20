@@ -1,8 +1,8 @@
 import * as actions from "../action_types";
 import axios from "axios";
-import { getCorporateNameApi } from "../../assets/common/apis/Api_config";
+import { getCorporateNameApi } from "../../common/apis/Api_config";
 import { RefreshToken } from "./Auth-Actions";
-import { SystemAdminApi } from "../../assets/common/apis/Api_ends_points";
+import { SystemAdminApi } from "../../common/apis/Api_ends_points";
 
 // get all corporate Name By Bank ID
 const corporateBankIdInit = () => {

@@ -4,9 +4,9 @@ import {
   userAuditReport,
   securityAuditReport,
   tradeCountReport,
-} from "../../assets/common/apis/Api_config";
+} from "../../common/apis/Api_config";
 import { RefreshToken } from "./Auth-Actions";
-import { ReportApi } from "../../assets/common/apis/Api_ends_points";
+import { ReportApi } from "../../common/apis/Api_ends_points";
 
 const downloadAuditUserInit = () => {
   return {
