@@ -8,6 +8,7 @@ const initialState = {
   isSignUp: false,
   SessionExpeireResponseMessage: "",
   roles: null,
+  RoleList: [],
   Token: "",
   Refresh: "",
 };
@@ -67,6 +68,29 @@ const authReducer = (state = initialState, action) => {
         Refresh: "",
         SessionExpeireResponseMessage: action.message,
       };
+
+    case actions.ROLE_LIST_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.ROLE_LIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        RoleList: action.response,
+        ResponseMessage: action.response,
+      };
+
+    case actions.ROLE_LIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        RoleList: [],
+        ResponseMessage: action.response,
+      };
+
     default:
       return { ...state };
   }

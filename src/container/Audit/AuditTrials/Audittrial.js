@@ -1,16 +1,193 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { TextField, Button, Table, Paper } from "../../../components/elements";
 import { Select, Space } from "antd";
 import DatePicker from "react-multi-date-picker";
 import "./Audittrial.css";
+import { useDispatch, useSelector } from "react-redux";
+import { auditorUserRoles } from "../../../store/actions/Auth-Actions";
+import {
+  AcceptsOnlyCharacter,
+  removeSpaceandSpecialCharAcptHash,
+} from "../../../common/functions/RegexFunctions";
 
 const AuditTrial = () => {
+  const { auth } = useSelector((state) => state);
+  console.log(auth, "authReducerauthReducerauthReducer");
   const [value, setValue] = useState(new Date());
+  const dispatch = useDispatch();
+  const [roledefine, setRoledefine] = useState([]);
+  const [errormessege, setErrormessege] = useState("");
+  const [audittrialdetails, setAudittrialdetails] = useState({
+    refrencenumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    customercode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    Actionby: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    selectRole: [],
+    errorStatus: false,
+  });
+
+  const resetBtnFunc = () => {
+    setAudittrialdetails({
+      referencenumber: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      customercode: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Actionby: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      setRoledefine: [],
+    });
+  };
+
+  useEffect(() => {
+    if (Object.keys(auth.RoleList).length > 0) {
+      console.log(auth.RoleList, "lististististist");
+      let newarr = [];
+      auth.RoleList.map((data, index) => {
+        console.log(data, "datadatadatadata");
+        newarr.push({
+          label: data.roleName,
+          value: data.roleID,
+        });
+      });
+      setRoledefine(newarr);
+      console.log(roledefine, "setRoledefinesetRoledefinesetRoledefine");
+    }
+  }, [auth.RoleList]);
+
+  console.log(audittrialdetails, "setAudittrialdetailssetAudittrialdetails");
+
+  const onChangeFunc = (e) => {
+    let name = e.target.name;
+    let value = e.target.value.trimStart();
+    if (value.length <= 100) {
+      if (name === "refrencenumber" && value !== "") {
+        if (removeSpaceandSpecialCharAcptHash(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            refrencenumber: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            refrencenumber: {
+              value: audittrialdetails.refrencenumber.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "refrencenumber" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          refrencenumber: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else if (name === "customercode" && value !== "") {
+        if (removeSpaceandSpecialCharAcptHash(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            customercode: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            customercode: {
+              value: audittrialdetails.customercode.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "customercode" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          customercode: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      } else if (name === "actionby" && value !== "") {
+        if (AcceptsOnlyCharacter(value)) {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            Actionby: {
+              value: value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAudittrialdetails({
+            ...audittrialdetails,
+            Actionby: {
+              value: audittrialdetails.Actionby.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else if (name === "actionby" && value === "") {
+        setAudittrialdetails({
+          ...audittrialdetails,
+          Actionby: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    console.log("handleChangehandleChangehandleChange", e);
+    setAudittrialdetails({
+      ...audittrialdetails,
+      selectRole: e.value,
+    });
+  };
 
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    setValue(dateString);
+    console.log(setValue, "dateStringdateStringdateString");
   };
+
+  useEffect(() => {
+    dispatch(auditorUserRoles());
+  }, []);
 
   return (
     <Fragment>
@@ -29,18 +206,30 @@ const AuditTrial = () => {
                   <TextField
                     className="text-fields-edituser"
                     placeholder="Reference Number"
+                    name={"refrencenumber"}
+                    value={audittrialdetails.refrencenumber.value}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="MYSIS Customer Code"
+                    name={"customercode"}
+                    value={audittrialdetails.customercode.value}
+                    onChange={onChangeFunc}
                   />
                   <TextField
                     className="text-fields-edituser"
                     placeholder="Action By"
+                    name={"actionby"}
+                    value={audittrialdetails.Actionby.value}
+                    onChange={onChangeFunc}
                   />
                   <Select
                     className="select-field-edit"
                     placeholder="Select Role"
+                    options={roledefine}
+                    name="Roles"
+                    onChange={handleChange}
                   />
                 </Col>
               </Row>
@@ -74,6 +263,7 @@ const AuditTrial = () => {
                     icon={<i className="icon-refresh icon-reset-space"></i>}
                     text="Reset"
                     className="reset-btn"
+                    onClick={resetBtnFunc}
                   />
                 </Col>
 
