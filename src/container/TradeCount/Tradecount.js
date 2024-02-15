@@ -4,6 +4,7 @@ import {
   CustomPaper,
   TextField,
   Button,
+  Notification,
   Table,
   Loader,
 } from "../../components/elements";
@@ -61,6 +62,11 @@ const TradeCount = () => {
 
   // state for table rows
   const [rows, setRows] = useState([]);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   // state for LoginHistory fields
   const [userTradeCount, setUserTradeCount] = useState({
@@ -207,6 +213,19 @@ const TradeCount = () => {
           ? moment(userTradeCount.endDate.value).format("YYYYMMDD")
           : "",
     };
+    if (reportTrade !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Download Successfully",
+      });
+    } else {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Downloading Failed",
+      });
+    }
     dispatch(downloadTradeCountReport(reportTrade));
   };
 
@@ -269,11 +288,22 @@ const TradeCount = () => {
     if (
       auditorReducer.getSearchTransactionDetails.length > 0 &&
       auditorReducer.getSearchTransactionDetails !== null &&
-      auditorReducer.getSearchTransactionDetails !== undefined
+      auditorReducer.getSearchTransactionDetails !== undefined &&
+      auditorReducer.getSearchTransactionDetails !== ""
     ) {
       setRows(auditorReducer.getSearchTransactionDetails);
+      setOpen({
+        ...open,
+        open: true,
+        message: "Record Found",
+      });
     } else {
       setRows([]);
+      setOpen({
+        ...open,
+        open: true,
+        message: "No Record Found",
+      });
     }
   }, [auditorReducer.getSearchTransactionDetails]);
   console.log("getSearchTransactionDetails", rows);
@@ -996,6 +1026,7 @@ const TradeCount = () => {
           </Col>
         </Row>
       </section>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {auditorReducer.Loading || reportReducer.Loading ? <Loader /> : null}
     </Fragment>
   );

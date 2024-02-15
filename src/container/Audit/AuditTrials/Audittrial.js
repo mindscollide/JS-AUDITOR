@@ -3,6 +3,7 @@ import { Container, Col, Row } from "react-bootstrap";
 import {
   TextField,
   Button,
+  Notification,
   Table,
   Paper,
   Loader,
@@ -35,6 +36,11 @@ const AuditTrial = () => {
   // state for action by drop down
   const [actionBy, setActionBy] = useState([]);
   const [actionByValue, setActionByValue] = useState([]);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   //get bankID from local storage
   let AuditBankId =
@@ -162,6 +168,19 @@ const AuditTrial = () => {
       LastName: auditTrialFields.lastName.value,
       BankID: parseInt(auditTrialFields.BankID.value),
     };
+    if (reportAudit !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Download Successfully",
+      });
+    } else {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Downloading Failed",
+      });
+    }
     dispatch(downloadAuditTrialReport(reportAudit));
   };
 
@@ -366,7 +385,7 @@ const AuditTrial = () => {
           </Col>
         </Row>
       </section>
-
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {reportReducer.Loading ? <Loader /> : null}
     </Fragment>
   );

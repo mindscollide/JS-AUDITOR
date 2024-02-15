@@ -3,6 +3,7 @@ import { Container, Col, Row } from "react-bootstrap";
 import {
   TextField,
   Button,
+  Notification,
   Table,
   Paper,
   Loader,
@@ -27,6 +28,11 @@ const SecurityActivity = () => {
   // state for disable the previous date from end date by selecting date from start date
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   // state for action by drop down
   const [securityActionBy, setSecurityActionBy] = useState([]);
@@ -158,6 +164,20 @@ const SecurityActivity = () => {
       LastName: securityActivityFields.lastName.value,
       BankID: parseInt(securityActivityFields.BankID.value),
     };
+
+    if (reportSecurtiy !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Download Successfully",
+      });
+    } else {
+      setOpen({
+        ...open,
+        open: true,
+        message: "Downloading Failed",
+      });
+    }
     dispatch(downloadSecurityReport(reportSecurtiy));
   };
 
@@ -356,6 +376,7 @@ const SecurityActivity = () => {
           </Col>
         </Row>
       </section>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {reportReducer.Loading ? <Loader /> : null}
     </>
   );
